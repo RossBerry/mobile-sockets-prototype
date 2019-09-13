@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SocketsPrototype.ViewModels;assembly=SocketsPrototype"
+             x:Class="SocketsPrototype.Views.MainPage">
+    <StackLayout Margin="20,35,20,20">
+        <StackLayout.BindingContext>
+            <local:MainPageViewModel/>
+        </StackLayout.BindingContext>
+        <Grid IsVisible="{Binding CanStartServerClient}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Text="Start Out-Channel" Grid.Column="0" HorizontalOptions="Fill" Command="{Binding StartOutChannelCommand}"/>
+            <Button Text="Start In-Channel" Grid.Column="1" HorizontalOptions="Fill" Command="{Binding StartInChannelCommand}"/>
+        </Grid>
+        <Grid IsVisible="{Binding AllowMessaging}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Entry Text="{Binding SendMessageText}" Grid.Column="0" HorizontalOptions="FillAndExpand"></Entry>
+            <Button Text="Send" Grid.Column="1" HorizontalOptions="Fill" Command="{Binding SendToOutChannel}"/>
+        </Grid>
+        <Label Text="{Binding ErrorDetail}"/>
+        <Label Text="{Binding InfoDetail}"/>
+        <!--<ListView ItemsSource="{Binding DetectedDevices}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Name}" Grid.Column="0" HorizontalOptions="Fill"/>
+                            <Label Text="{Binding Id}" Grid.Column="1" HorizontalOptions="Fill"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+        <!--<Button Text="Scan For Devices" Command="{Binding ScanForDevicesCommand}"></Button>
+        <Label Text="Detected Devices"/>
+        <ListView ItemsSource="{Binding DetectedDevices}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Button Text="{Binding Name}" Command="{Binding ConnectToDeviceCommand}" CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+    </StackLayout>
+</ContentPage>
