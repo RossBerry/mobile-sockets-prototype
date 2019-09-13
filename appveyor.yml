@@ -143,7 +143,7 @@ environment:
 # scripts that run after cloning repository
 install:
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
-  - 7z x sdk-tools-windows-3859397.zip -oC:\android-sdk-windows > nul
+  - 7z x sdk-tools-windows-4333796.zip -oC:\android-sdk-windows > nul
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
 
 # enable patching of AssemblyInfo.* files
