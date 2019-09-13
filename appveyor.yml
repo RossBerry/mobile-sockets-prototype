@@ -63,7 +63,7 @@ branches:
 #---------------------------------#
 
 # Build worker image (VM template)
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 # scripts that are called at very beginning, before repo cloning
 # init:
@@ -172,12 +172,12 @@ image: Visual Studio 2017
 #---------------------------------#
 
 # build platform, i.e. x86, x64, Any CPU. This setting is optional.
-platform: Any CPU
+#platform: Any CPU
 
 # to add several platforms to build matrix:
-#platform:
-#  - x86
-#  - Any CPU
+platform:
+  - x86
+  - Any CPU
 
 # build Configuration, i.e. Debug, Release, etc.
 configuration: Release
@@ -209,7 +209,8 @@ configuration: Release
 
 
 # scripts to run before build
-#before_build:
+before_build:
+  - nuget restore
 
 # to run your custom scripts instead of automatic MSBuild
 #build_script:
