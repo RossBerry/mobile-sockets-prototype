@@ -1,1 +1,0 @@
-C:\Git\mobile-sockets-prototype\SocketsPrototype\SocketsPrototype.UWP\SocketsPrototype.UWP.csproj;x86
