@@ -142,6 +142,11 @@ environment:
 
 # scripts that run after cloning repository
 install:
+  - echo %CERTIFICATE_WINDOWS_PFX% | base64.exe --decode > SocketsPrototype.UWP_TemporaryKey.pfx
+  - ps: |
+      Set-Location -Path cert:\localMachine\my
+  - ps: |
+      Import-PfxCertificate -FilePath SocketsPrototype.UWP_TemporaryKey.pfx
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
   - 7z x sdk-tools-windows-4333796.zip -o"C:\Program Files (x86)\Android\android-sdk\" > nul
   - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" --licenses
@@ -220,13 +225,6 @@ before_build:
 
 # to disable automatic builds
 #build: off
-
-deploy_script:
-  - echo %CERTIFICATE_WINDOWS_PFX% | base64.exe --decode > SocketsPrototype.pfx
-  - ps: |
-      Set-Location -Path cert:\localMachine\my
-  - ps: |
-      Import-PfxCertificate -FilePath SocketsPrototype.pfx
 
 #---------------------------------#
 #       tests configuration       #
