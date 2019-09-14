@@ -221,6 +221,13 @@ before_build:
 # to disable automatic builds
 #build: off
 
+deploy_script:
+  - echo %CERTIFICATE_WINDOWS_PFX% | base64.exe --decode > SocketsPrototype.pfx
+  - ps: |
+      Set-Location -Path cert:\localMachine\my
+  - ps: |
+      Import-PfxCertificate -FilePath SocketsPrototype.pfx
+
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
