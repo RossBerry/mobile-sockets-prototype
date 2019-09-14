@@ -92,7 +92,7 @@ image: Visual Studio 2019
   #   secure: FW3tJ3fMncxvs58/ifSP7w==
 
 environment:
-  PATH: C:\android-sdk-windows\tools\lib\;$(PATH)
+  PATH: C:\android-sdk-windows\platforms\android-28\;$(PATH)
   matrix:
     - ANDROID_HOME: "C:\\android-sdk-windows"
 #
@@ -146,7 +146,7 @@ install:
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
   - 7z x sdk-tools-windows-4333796.zip -oC:\android-sdk-windows > nul
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
-  - C:\android-sdk-windows\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
+  - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
   - ps: |
       [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\bin\", "Machine")
   - ps: |
