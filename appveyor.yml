@@ -142,7 +142,7 @@ environment:
 
 # scripts that run after cloning repository
 install:
-  - echo %CERTIFICATE_WINDOWS_PFX% | base64.exe --decode > SocketsPrototype.UWP_TemporaryKey.pfx
+  - echo %CERTIFICATE_WINDOWS_PFX% | base64.exe -di > SocketsPrototype.UWP_TemporaryKey.pfx
   - ps: |
       Set-Location -Path cert:\localMachine\my
   - ps: |
