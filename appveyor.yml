@@ -145,8 +145,11 @@ install:
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
   - 7z x sdk-tools-windows-4333796.zip -oC:\android-sdk-windows > nul
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
+  - C:\android-sdk-windows\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
   - ps: |
       [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\bin\", "Machine")
+  - ps: |
+      [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\lib\", "Machine")
 # enable patching of AssemblyInfo.* files
 # assembly_info:
 #   patch: true
