@@ -92,6 +92,7 @@ image: Visual Studio 2019
   #   secure: FW3tJ3fMncxvs58/ifSP7w==
 
 environment:
+  PATH: C:\android-sdk-windows\tools\lib\;$(PATH)
   matrix:
     - ANDROID_HOME: "C:\\android-sdk-windows"
 #
