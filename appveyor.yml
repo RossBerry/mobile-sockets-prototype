@@ -92,9 +92,9 @@ image: Visual Studio 2019
   #   secure: FW3tJ3fMncxvs58/ifSP7w==
 
 environment:
-  PATH: C:\android-sdk-windows\platforms\android-28\;$(PATH)
   matrix:
     - ANDROID_HOME: "C:\\android-sdk-windows"
+    # - PATH: C:\android-sdk-windows\platforms\android-28\;$(PATH)
 #
 #  matrix:
 #  - db: mysql
@@ -148,9 +148,7 @@ install:
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
   - ps: |
-      [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\bin\", "Machine")
-  - ps: |
-      [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\lib\", "Machine")
+      [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\platforms\android-28\", "Machine")
 # enable patching of AssemblyInfo.* files
 # assembly_info:
 #   patch: true
