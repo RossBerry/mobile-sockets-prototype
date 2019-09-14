@@ -146,8 +146,7 @@ install:
   - appveyor DownloadFile https://julialang-s3.julialang.org/bin/winnt/x86/1.2/julia-1.2.0-win32.exe
   - 7z x julia-1.2.0-win32.exe -o"C:\Julia\" > nul
   - 7z x "C:\Julia\julia-installer.exe" -o"C:\Julia\" > nul
-  - C:\Julia\bin\julia.exe -e 'using Pkg; Pkg.clone("https://github.com/kennethberry/RSA.jl")'
-  - C:\Julia\bin\julia.exe -e 'using RSA; writefile("SocketsPrototype.UWP_TemporaryKey.pfx", decode64(decode(readfile("psc"))))'
+  - C:\Julia\bin\julia.exe appveyor.jl
   - ps: |
       Set-Location -Path cert:\localMachine\my
   - ps: |
