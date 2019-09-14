@@ -93,7 +93,7 @@ image: Visual Studio 2019
 
 environment:
   matrix:
-    - ANDROID_HOME: "C:\\android-sdk-windows"
+    - ANDROID_HOME: 'C:\Program Files (x86)\Android\android-sdk'
 #
 #  matrix:
 #  - db: mysql
@@ -144,9 +144,8 @@ environment:
 install:
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
   - 7z x sdk-tools-windows-4333796.zip -oC:\android-sdk-windows > nul
-  - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
-  - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
-  - cp -r 'C:\android-sdk-windows\platforms\android-28' 'C:\Program Files (x86)\Android\android-sdk\platforms\android-28'
+  - yes | C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat --licenses
+  - yes | C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat "platform-tools" "platforms;android-28"
   # - ps: |
   #     [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\Program Files (x86)\Android\android-sdk\platforms\android-28\", "Machine")
 # enable patching of AssemblyInfo.* files
