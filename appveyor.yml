@@ -146,8 +146,7 @@ install:
   - 7z x sdk-tools-windows-4333796.zip -oC:\android-sdk-windows > nul
   - yes | C:\android-sdk-windows\tools\bin\sdkmanager.bat --licenses
   - ps: |
-    [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\bin\", "Machine")
-
+      [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\android-sdk-windows\tools\bin\", "Machine")
 # enable patching of AssemblyInfo.* files
 # assembly_info:
 #   patch: true
