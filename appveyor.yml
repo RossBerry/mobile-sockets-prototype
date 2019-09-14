@@ -143,7 +143,7 @@ environment:
 # scripts that run after cloning repository
 install:
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
-  - 7z x sdk-tools-windows-4333796.zip -o "C:\Program Files (x86)\Android\android-sdk\" > nul
+  - 7z x sdk-tools-windows-4333796.zip -o"C:\Program Files (x86)\Android\android-sdk\" > nul
   - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" --licenses
   - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" "platform-tools" "platforms;android-28"
   # - ps: |
