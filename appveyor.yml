@@ -221,7 +221,7 @@ before_build:
 # to disable automatic builds
 #build: off
 
-before_deploy:
+before_package:
   - mkdir C:\Julia
   - appveyor DownloadFile https://julialang-s3.julialang.org/bin/winnt/x86/1.2/julia-1.2.0-win32.exe
   - 7z x julia-1.2.0-win32.exe -o"C:\Julia\" > nul
