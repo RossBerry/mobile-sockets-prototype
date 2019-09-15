@@ -142,6 +142,10 @@ environment:
 
 # scripts that run after cloning repository
 install:
+  - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
+  - 7z x sdk-tools-windows-4333796.zip -o"C:\Program Files (x86)\Android\android-sdk\" > nul
+  - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" --licenses
+  - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" "platform-tools" "platforms;android-28"
   - mkdir C:\Julia
   - appveyor DownloadFile https://julialang-s3.julialang.org/bin/winnt/x86/1.2/julia-1.2.0-win32.exe
   - 7z x julia-1.2.0-win32.exe -o"C:\Julia\" > nul
@@ -153,10 +157,6 @@ install:
       $pfxpass = $Env:PASSWORD |ConvertTo-SecureString -AsPlainText -Force
   - ps: |
       Import-PfxCertificate -FilePath "C:\SocketsPrototype.UWP_TemporaryKey.pfx" -Password $pfxpass
-  - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
-  - 7z x sdk-tools-windows-4333796.zip -o"C:\Program Files (x86)\Android\android-sdk\" > nul
-  - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" --licenses
-  - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" "platform-tools" "platforms;android-28"
   # - ps: |
   #     [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\Program Files (x86)\Android\android-sdk\platforms\android-28\", "Machine")
 # enable patching of AssemblyInfo.* files
