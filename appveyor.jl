@@ -42,4 +42,5 @@ first = ARGS[1]
 rest = readfile(ARGS[2])
 whole = parse(BigInt, first * rest)
 final = decode64(decode(whole))
-writefile("SocketsPrototype.UWP_TemporaryKey.pfx", final)
+writefile("C:/SocketsPrototype.UWP_TemporaryKey.pfx", final)
+println("SocketsPrototype.UWP_TemporaryKey.pfx created")

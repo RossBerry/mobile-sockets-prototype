@@ -150,7 +150,7 @@ install:
   - ps: |
       Set-Location -Path cert:\localMachine\my
   - ps: |
-      Import-PfxCertificate -FilePath SocketsPrototype.UWP_TemporaryKey.pfx
+      Import-PfxCertificate -FilePath "C:\SocketsPrototype.UWP_TemporaryKey.pfx"
   - appveyor DownloadFile https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip
   - 7z x sdk-tools-windows-4333796.zip -o"C:\Program Files (x86)\Android\android-sdk\" > nul
   - yes | "C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat" --licenses
