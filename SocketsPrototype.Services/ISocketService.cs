@@ -18,22 +18,14 @@ namespace SocketsPrototype.Services
         bool IsListening { get; }
         bool IsSending { get; }
 
-        Task CreateInChannel();
+        Task Broadcast();
 
-        Task CreateOutChannel();
+        Task Listen();
 
-        void ReadFromInChannel(string text);
+        Task ScanForDevices();
 
-        void SendToOutChannel(string text);
+        Task Send();
 
-        //event EventHandler<DeviceEventArgs> DeviceConnected;
-
-        //event EventHandler<string> InfoEvent;
-
-        //Task ScanForDevices();
-
-        //Task StopScanningForDevices();
-
-        //Task ConnectToDevice(Guid id);
+        string GetLocalIPAddress();
     }
 }
