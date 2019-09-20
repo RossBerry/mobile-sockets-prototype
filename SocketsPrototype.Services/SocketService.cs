@@ -9,52 +9,31 @@ using System.Threading;
 using System.Threading.Tasks;
 using SocketsPrototype.Models;
 using Sockets.Plugin;
-using SocketHelpers.Discovery;
 
 namespace SocketsPrototype.Services
 {
-    public class SocketService : ISocketService, IDisposable
+    public class SocketService : ISocketService
     {
+        int ISocketService.inPort => 9000;
+
         public event EventHandler<Exception> ErrorEvent;
         public event EventHandler<string> InfoEvent;
-        public event EventHandler<bool> PublishingStarted;
         public event EventHandler<bool> InChannelStarted;
         public event EventHandler<bool> OutChannelStarted;
         public event EventHandler<DeviceModel> DeviceDetected;
-
-        private List<DeviceModel> DetectedDevices = new List<DeviceModel>();
-
         public bool IsListening { get; private set; }
         public bool IsSending { get; private set; }
 
+
+        private int inPort = 9000;
         private TcpSocketListener _inChannel = null;
         private TcpSocketClient _outChannel = null;
-        private string outAddress = "192.168.50.179";
-        private int inPort = 9000;
-        private int outPort = 9000;
+        
 
-        public async Task Broadcast()
+        public async Task Listen(int port)
         {
-            string myIP = GetLocalIPAddress();
 
-            // responds to all requests with its ip/port as a string
-            var serviceDef = new FuncyJsonServiceDefinition<string, IDiscoveryPayload>()
-            {
-                DiscoveryRequestFunc = () => "EHLO",
-                ResponseForRequestFunc = _ => new DiscoverPayload(myIP, inPort)
-            };
-
-            // set up publisher and start listening
-            var publisher = serviceDef.CreateServicePublisher();
-            await publisher.Publish();
-
-            // TODO: Implement UDP broadcast for device discoevery
-        }
-
-        public async Task Listen()
-        {
-            RaiseInfoEvent("Creating In Channel!");
-
+            var myIP = GetLocalIPAddress();
             _inChannel = new TcpSocketListener();
 
             // when we get connections, read byte-by-byte from the socket's read stream
@@ -79,19 +58,19 @@ namespace SocketsPrototype.Services
             await _inChannel.StartListeningAsync(inPort);
 
             IsListening = true;
-            RaiseInfoEvent(string.Format("Listening on port {0}", inPort));
+            RaiseInfoEvent(string.Format("Listening at {0}", myIP));
             RaiseInChannelStarted(true);
         }
 
-        public async Task Send()
+        public async Task Send(string ip, int port)
         {
             var r = new Random();
             
-            RaiseInfoEvent(string.Format("Connecting to: {0}:{1}", outAddress, outPort));
+            RaiseInfoEvent(string.Format("Connecting to: {0}:{1}", ip, port));
             _outChannel = new TcpSocketClient();
             RaiseOutChannelStarted(true);
 
-            await _outChannel.ConnectAsync(outAddress, outPort);
+            await _outChannel.ConnectAsync(ip, port);
             RaiseInfoEvent("We're connected!");
             
             for (int i = 0; i < 5; i++)
@@ -151,11 +130,6 @@ namespace SocketsPrototype.Services
         private void RaiseOutChannelStarted(bool isStarted)
         {
             OutChannelStarted?.Invoke(this, isStarted);
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }

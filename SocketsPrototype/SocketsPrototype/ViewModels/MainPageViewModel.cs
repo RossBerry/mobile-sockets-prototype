@@ -13,15 +13,12 @@ namespace SocketsPrototype.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        public ObservableCollection<DeviceModel> DetectedDevices { get; private set; } = new ObservableCollection<DeviceModel>();
-        public ObservableCollection<DeviceModel> ConnectedDevices { get; set; } = new ObservableCollection<DeviceModel>();
+        public event EventHandler<bool> MessageEntryStarted;
 
-        public ICommand StartInChannelCommand { get; private set; }
-        public ICommand StartOutChannelCommand { get; private set; }
-        public ICommand ScanForDevicesCommand { private set; get; }
-        public ICommand ConnectToDeviceCommand { private set; get; }
+        public ICommand ListenCommand { get; private set; }
+        public ICommand SendCommand { get; private set; }
+        public ICommand MessageEntryCommand { get; private set; }
 
-        //public ICommand SendMessageCommand { get; private set; }
 
         private readonly ISocketService _socketService;
 
@@ -30,39 +27,29 @@ namespace SocketsPrototype.ViewModels
             Title = "Scan";
 
             _socketService = DependencyService.Get<ISocketService>();
-            //_socketService.DeviceDetected += OnDeviceDetected;
             _socketService.ErrorEvent += OnErrorEvent;
             _socketService.InfoEvent += OnInfoEvent;
             _socketService.InChannelStarted += OnInChannelStarted;
             _socketService.OutChannelStarted += OnOutChannelStarted;
+            MessageEntryStarted += OnMessageEntryStarted;
 
             SetupButtonCommands();
         }
 
-        private async Task CreateInChannel()
+        private void StartMessageEntry()
         {
-            await _socketService.CreateInChannel();
+            RaiseMessageEntryStarted(true);
         }
 
-        private async Task CreateOutChannel()
+        private async Task Listen()
         {
-            await _socketService.CreateOutChannel();
+            await _socketService.Listen(_socketService.inPort);
         }
 
-        private void ReadFromInChannel(string text)
+        private async Task Send()
         {
-            _socketService.ReadFromInChannel(text);
+            await _socketService.Send(sendAddress, 9000);
         }
-
-        private void SendToOutChannel(string text)
-        {
-            _socketService.SendToOutChannel(text);
-        }
-
-        //public void ScanForDevices()
-        //{
-        //    _rssdpService.BeginSearch();
-        //}
 
         private string errorDetail;
 
@@ -77,6 +64,20 @@ namespace SocketsPrototype.ViewModels
         {
             get { return infoDetail; }
             set { SetProperty(ref infoDetail, value); }
+        }
+
+        private string sendAddress;
+        public string SendAddress
+        {
+            get { return sendAddress; }
+            set { SetProperty(ref sendAddress, value); }
+        }
+
+        private int sendPort;
+        public int SendPort
+        {
+            get { return sendPort; }
+            set { SetProperty(ref sendPort, value); }
         }
 
         private string sendMessageText;
@@ -100,52 +101,19 @@ namespace SocketsPrototype.ViewModels
             set { SetProperty(ref canStartClient, value); }
         }
 
-        private bool allowMessaging;
-        public bool AllowMessaging
+        private bool messageEntry;
+        public bool MessageEntry
         {
-            get { return allowMessaging; }
-            set { SetProperty(ref allowMessaging, value); }
+            get { return messageEntry; }
+            set { SetProperty(ref messageEntry, value); }
         }
 
         private void SetupButtonCommands()
         {
-            StartInChannelCommand = new Command(async() => await CreateInChannel());
-            StartOutChannelCommand = new Command(async() => await CreateOutChannel());
-            //ScanForDevicesCommand = new Command(() => ScanForDevices());
-            //SendMessageCommand = new Command(async () =>
-            //{
-            //    if (IsServer)
-            //    {
-            //        await SendToServer(SendMessageText);
-            //    }
-            //    else
-            //    {
-            //        SendToClients(SendMessageText);
-            //    }
-            //});
+            ListenCommand = new Command(async() => await Listen());
+            MessageEntryCommand = new Command(() => StartMessageEntry());
+            SendCommand = new Command(async() => await Send());
         }
-
-        //private void OnDeviceDetected(object sender, DeviceModel model)
-        //{
-        //    if (DetectedDevices.Any(d => d.Id == model.Id || d.Name == model.Name))
-        //        return;
-
-        //    DetectedDevices.Add(model);
-        //}
-
-        //private void OnDeviceConnected(object sender, DeviceEventArgs e)
-        //{
-        //    if (e.Device != null)
-        //    {
-        //        var device = new DeviceModel
-        //        {
-        //            Id = e.Device.Id,
-        //            Name = e.Device.Name
-        //        };
-
-        //        ConnectedDevices.Add(device);
-        //    }
-        //}
 
         private void OnErrorEvent(object sender, Exception e)
         {
@@ -160,13 +128,22 @@ namespace SocketsPrototype.ViewModels
         private void OnInChannelStarted(object sender, bool isStarted)
         {
             CanStartServer = !isStarted;
-            AllowMessaging = isStarted;
         }
 
         private void OnOutChannelStarted(object sender, bool isStarted)
         {
             CanStartClient = !isStarted;
-            AllowMessaging = isStarted;
+            MessageEntry = isStarted;
+        }
+
+        private void OnMessageEntryStarted(object sender, bool isStarted)
+        {
+            MessageEntry = isStarted;
+        }
+
+        private void RaiseMessageEntryStarted(bool isStarted)
+        {
+            MessageEntryStarted?.Invoke(this, isStarted);
         }
     }
 }
