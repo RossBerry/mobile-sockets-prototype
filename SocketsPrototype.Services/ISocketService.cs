@@ -13,27 +13,14 @@ namespace SocketsPrototype.Services
         event EventHandler<string> InfoEvent;
         event EventHandler<bool> InChannelStarted;
         event EventHandler<bool> OutChannelStarted;
-        event EventHandler<DeviceModel> DeviceDetected;
 
         bool IsListening { get; }
         bool IsSending { get; }
 
-        Task CreateInChannel();
+        int inPort { get; }
 
-        Task CreateOutChannel();
+        Task Listen(int port);
 
-        void ReadFromInChannel(string text);
-
-        void SendToOutChannel(string text);
-
-        //event EventHandler<DeviceEventArgs> DeviceConnected;
-
-        //event EventHandler<string> InfoEvent;
-
-        //Task ScanForDevices();
-
-        //Task StopScanningForDevices();
-
-        //Task ConnectToDevice(Guid id);
+        Task Send(string ip, int port);
     }
 }

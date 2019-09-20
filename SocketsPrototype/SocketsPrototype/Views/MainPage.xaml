@@ -7,21 +7,20 @@
         <StackLayout.BindingContext>
             <local:MainPageViewModel/>
         </StackLayout.BindingContext>
-        <Grid IsVisible="{Binding CanStartServerClient}">
+        <Label Text="PROTOTYPE" TextColor="Red" FontSize = "36" FontAttributes="Bold" HorizontalOptions="LayoutOptions.Center"/>
+        <Grid IsVisible="true">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Text="Start Out-Channel" Grid.Column="0" HorizontalOptions="Fill" Command="{Binding StartOutChannelCommand}"/>
-            <Button Text="Start In-Channel" Grid.Column="1" HorizontalOptions="Fill" Command="{Binding StartInChannelCommand}"/>
+            <Button Text="Listen" HorizontalOptions="LayoutOptions.Center" Command="{Binding ListenCommand}"/>
         </Grid>
-        <Grid IsVisible="{Binding AllowMessaging}">
+        <Grid IsVisible="true">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Entry Text="{Binding SendMessageText}" Grid.Column="0" HorizontalOptions="FillAndExpand"></Entry>
-            <Button Text="Send" Grid.Column="1" HorizontalOptions="Fill" Command="{Binding SendToOutChannel}"/>
+            <Entry Placeholder="Target IP" PlaceholderColor="LightSlateGray" Text="{Binding SendAddress}" Grid.Column="0" HorizontalOptions="FillAndExpand"></Entry>
+            <Button Text="Send" Grid.Column="1" HorizontalOptions="Fill" Command="{Binding SendCommand}"/>
         </Grid>
         <Label Text="{Binding ErrorDetail}"/>
         <Label Text="{Binding InfoDetail}"/>
