@@ -48,7 +48,7 @@ namespace SocketsPrototype.ViewModels
 
         private async Task Send()
         {
-            await _socketService.Send(sendMessageText, sendAddress, 9000);
+            await _socketService.Send(sendMessageText, sendAddress, 15555);
         }
 
         private string errorDetail;

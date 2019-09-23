@@ -14,7 +14,7 @@ namespace SocketsPrototype.Services
 {
     public class SocketService : ISocketService
     {
-        int ISocketService.inPort => 9000;
+        int ISocketService.inPort => 15555;
 
         public event EventHandler<Exception> ErrorEvent;
         public event EventHandler<string> InfoEvent;
@@ -25,7 +25,7 @@ namespace SocketsPrototype.Services
         public bool IsSending { get; private set; }
 
 
-        private int inPort = 9000;
+        private int inPort = 15555;
         private TcpSocketListener _inChannel = null;
         private TcpSocketClient _outChannel = null;
         
