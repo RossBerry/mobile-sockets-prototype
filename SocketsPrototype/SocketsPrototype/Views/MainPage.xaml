@@ -8,11 +8,17 @@
             <local:MainPageViewModel/>
         </StackLayout.BindingContext>
         <Label Text="PROTOTYPE" TextColor="Red" FontSize = "36" FontAttributes="Bold" HorizontalOptions="LayoutOptions.Center"/>
-        <Grid IsVisible="true">
+        <Grid IsVisible="{Binding CanStartServer}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Text="Listen" HorizontalOptions="LayoutOptions.Center" Command="{Binding ListenCommand}"/>
+        </Grid>
+        <Grid IsVisible="true">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Entry Placeholder="Message" PlaceholderColor="LightSlateGray" Text="{Binding SendMessageText}" HorizontalOptions="FillAndExpand"></Entry>
         </Grid>
         <Grid IsVisible="true">
             <Grid.ColumnDefinitions>

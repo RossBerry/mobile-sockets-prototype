@@ -21,6 +21,6 @@ namespace SocketsPrototype.Services
 
         Task Listen(int port);
 
-        Task Send(string ip, int port);
+        Task Send(string message, string ip, int port);
     }
 }

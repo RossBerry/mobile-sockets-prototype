@@ -44,47 +44,51 @@ namespace SocketsPrototype.Services
 
                 var bytesRead = -1;
                 var buf = new byte[1];
+                string message = "";
 
                 while (bytesRead != 0)
                 {
                     bytesRead = await args.SocketClient.ReadStream.ReadAsync(buf, 0, 1);
                     if (bytesRead > 0)
                         Debug.Write(buf[0]);
-                        RaiseInfoEvent(string.Format("Client sent: {0}", buf[0]));
+                        message += Encoding.ASCII.GetString(buf);
                 }
+                RaiseInfoEvent(string.Format("Client sent: {0}", message.Substring(0, message.Length - 1)));
             };
 
             // bind to the listen port across all interfaces
             await _inChannel.StartListeningAsync(inPort);
 
             IsListening = true;
-            RaiseInfoEvent(string.Format("Listening at {0}", myIP));
+            RaiseInfoEvent(string.Format("Listening on {0}... probably", myIP));
             RaiseInChannelStarted(true);
         }
 
-        public async Task Send(string ip, int port)
-        {
-            var r = new Random();
-            
-            RaiseInfoEvent(string.Format("Connecting to: {0}:{1}", ip, port));
+        public async Task Send(string message, string ip, int port)
+        {   
+            RaiseInfoEvent(string.Format("Connecting to {0}", ip));
             _outChannel = new TcpSocketClient();
             RaiseOutChannelStarted(true);
 
             await _outChannel.ConnectAsync(ip, port);
-            RaiseInfoEvent("We're connected!");
-            
-            for (int i = 0; i < 5; i++)
-            {
-                
-                // write to the 'WriteStream' property of the socket client to send data
-                var nextByte = (byte)r.Next(0, 254);
-                RaiseInfoEvent(string.Format("Sending: {0}", nextByte));
-                _outChannel.WriteStream.WriteByte(nextByte);
-                await _outChannel.WriteStream.FlushAsync();
 
-                // wait a little before sending the next bit of data
-                await Task.Delay(TimeSpan.FromMilliseconds(500));
-            }
+            RaiseInfoEvent("Connected!");
+            RaiseInfoEvent(string.Format("Sending: {0}", message));
+            byte[] messageArray = Encoding.ASCII.GetBytes(message);
+            _outChannel.WriteStream.Write(messageArray, 0, messageArray.Length);
+
+            //for (int i = 0; i < 5; i++)
+            //{
+
+            //    // write to the 'WriteStream' property of the socket client to send data
+            //    var nextByte = (byte)r.Next(0, 254);
+            //    RaiseInfoEvent(string.Format("Sending: {0}", nextByte));
+            //    _outChannel.WriteStream.WriteByte(nextByte);
+            //    await _outChannel.WriteStream.FlushAsync();
+
+            //    // wait a little before sending the next bit of data
+            //    await Task.Delay(TimeSpan.FromMilliseconds(500));
+            //}
 
             await _outChannel.DisconnectAsync();
             RaiseInfoEvent("Message sent!");
@@ -101,15 +105,27 @@ namespace SocketsPrototype.Services
 
         public string GetLocalIPAddress()
         {
+            var localAddresses = new List<string>();
             var host = Dns.GetHostEntry(Dns.GetHostName());
+            RaiseInfoEvent("-- Local Addresses --");
+            RaiseInfoEvent("-----------------------");
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    return ip.ToString();
+                    RaiseInfoEvent(ip.ToString());
+                    localAddresses.Add(ip.ToString());
                 }
             }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
+            RaiseInfoEvent("-----------------------");
+            if (localAddresses.Count == 0)
+            {
+                throw new Exception("No network adapters with an IPv4 address in the system!");
+            }
+            else
+            {
+                return localAddresses[localAddresses.Count - 1];
+            }
         }
 
         private void RaiseErrorEvent(Exception e)

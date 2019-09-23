@@ -48,7 +48,7 @@ namespace SocketsPrototype.ViewModels
 
         private async Task Send()
         {
-            await _socketService.Send(sendAddress, 9000);
+            await _socketService.Send(sendMessageText, sendAddress, 9000);
         }
 
         private string errorDetail;
@@ -122,7 +122,7 @@ namespace SocketsPrototype.ViewModels
 
         private void OnInfoEvent(object sender, string info)
         {
-            InfoDetail = info + "\r\n" + InfoDetail;
+            InfoDetail += "\r\n" + info;
         }
 
         private void OnInChannelStarted(object sender, bool isStarted)
